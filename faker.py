@@ -1,7 +1,6 @@
 #     AGH LEGITYMACJA MIASTECZKO STUDENCKIE PASS
 #     PROGRAM "PODRABIA" LEGITYMACJE STUDENCKIE TYLKO W CELU WEJSCIA NA MIASTECZKO ( NIE W CELACH KOMERCYJNYCH )
-#     CELEM PROGRAMU NIE SA KORZYSCI MATERIALNE LUB PODRABIANIE FAKTYCZNE DOKUMENTU,
-#     A CIEKAWOSC CZY JESTEM W STANIE TO NAPISAC
+#     CELEM PROGRAMU NIE SA KORZYSCI MATERIALNE LUB PODRABIANIE FAKTYCZNE DOKUMENTU
 
 #WYMAGANE BIALE TLO
 #WYMAGANY FORMAT NAZWY IMIE_DRUGIEIMIE_NAZWISKO.JPG/PNG/JPEG
@@ -16,17 +15,19 @@ DATE = dt.datetime.now()
 IMAGE_SIZE = (238, 299)
 FONT = ImageFont.truetype("fonts/FaktPro-Medium.ttf", size=39)
 FONT_N = ImageFont.truetype("fonts/Roboto-Medium.ttf", size=27)
+FONT_A = ImageFont.truetype("fonts/age.ttf", size=37)
+MALE_PATTERN = "images/male_id.jpg"
+FEMALE_PATTERN = "images/female_id.jpg"
 
 
 class Faker:
 
     def __init__(self, year: str, month: str, day: str, name: str, second_name: str, surname: str, photo: str,
-                 album: str, show_day: str, show_month: str, show_hour: str, pesel: str, directory: str,
+                 album: str, show_day: str, show_month: str, pesel: str, directory: str,
                  random: bool = False):
 
         self.directory = directory
         self.random = random
-        self.show_hour = show_hour
         self.show_day = show_day
         self.show_month = show_month
         self.photo = photo
@@ -55,9 +56,9 @@ class Faker:
 
     def _calculate_age(self):
         if int(self.month) < DATE.month or (int(self.month) == DATE.month and int(self.day) <= DATE.day):
-            return DATE.year - int(self.year)
+            return str(DATE.year - int(self.year))
         else:
-            return DATE.year - int(self.year) - 1
+            return str(DATE.year - int(self.year) - 1)
 
     def _randomize(self):
         self.year = rd.randint(2002, 2005)
@@ -70,9 +71,9 @@ class Faker:
         return f'{str(self.year)[2:]}{int(self.month) + 20}{self.day}{rd.randint(10000, 99999)}'
 
     def _fake(self):
-        image_sex = 'images/legitka_m20.jpg'
+        image_sex = MALE_PATTERN
         if self.sex == 'F':
-            image_sex = 'images/legitka_k20.jpg'
+            image_sex = FEMALE_PATTERN
 
         if len(self.day) == 1:
             self.day = '0' + self.day
@@ -145,18 +146,27 @@ class Faker:
 
         )
 
+        # --------------------------------------------------------------------- A G E
+        ImageDraw.Draw(
+            pattern_image  # Image
+        ).text(
+            (675, 657),  # Coordinates
+            self.age,  # Text
+            (255, 255, 255),  # Color
+            font=FONT_A,
+            stroke_width=2
+
+        )
+
         # --------------------------------------------------------------------- D I S P L A Y   D A T E
         ImageDraw.Draw(
             pattern_image  # Image
         ).text(
             (220, 1090),  # Coordinates
-            f'{self.show_day}.{self.show_month}.{DATE.year} {self.show_hour}',  # Text
+            f'{self.show_day}.{self.show_month}.{DATE.year} 22:28',  # Text
             (0, 0, 0),  # Color
             font=FONT_N
         )
 
-        # pattern_image.show()
+        #pattern_image.show()
         pattern_image.save(self.directory)
-
-
-
