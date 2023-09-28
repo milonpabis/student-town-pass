@@ -1,7 +1,8 @@
 from UI.MainWindow import Ui_MainWindow
-from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QProgressDialog
-from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
+from PySide6.QtCore import Qt, QSize, QDate
 from PySide6.QtGui import QIcon, QFont, QPixmap
+from faker import Faker, DATE
 
 
 class Window(QMainWindow, Ui_MainWindow):
@@ -30,6 +31,8 @@ class Window(QMainWindow, Ui_MainWindow):
         self.bt_savedir.pressed.connect(self._save_dir)
         self.check_random.stateChanged.connect(self._checked_random)
 
+        self.de_showdate.setDate(QDate(DATE.year, DATE.month, DATE.day))
+
     def _generate(self):
         self._receive_data()
         if self._check_inputs():
@@ -37,7 +40,12 @@ class Window(QMainWindow, Ui_MainWindow):
                   surname=self.surname, photo=self.photo, album=self.album, show_day=self.show_day,
                   show_month=self.show_month, pesel=self.pesel, directory=self.dir, random=self.random)
         else:
-            print('fill the data!')
+            msg = QMessageBox()
+            msg.setText("Missing values!")
+            msg.setFont(QFont("Fixedsys", 11))
+            msg.setWindowTitle("Ooops!")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec()
 
     def _check_inputs(self) -> bool:
         if (self.name and self.second_name and self.surname and self.dir and self.photo and self.show_month
@@ -63,9 +71,9 @@ class Window(QMainWindow, Ui_MainWindow):
         self.l_photo.setPixmap(QPixmap(self.photo))
 
     def _receive_data(self):
-        self.name = self.le_fname.text()
-        self.second_name = self.le_secname.text()
-        self.surname = self.le_surname.text()
+        self.name = self.le_fname.text().upper()
+        self.second_name = self.le_secname.text().upper()
+        self.surname = self.le_surname.text().upper()
         self.show_day = str(self.de_showdate.date().day())
         self.show_month = str(self.de_showdate.date().month())
         self.random = self.check_random.isChecked()

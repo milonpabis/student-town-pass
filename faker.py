@@ -61,9 +61,9 @@ class Faker:
             return str(DATE.year - int(self.year) - 1)
 
     def _randomize(self):
-        self.year = rd.randint(2002, 2005)
-        self.month = rd.randint(1, 12)
-        self.day = rd.randint(1, 28)
+        self.year = str(rd.randint(2002, 2005))
+        self.month = str(rd.randint(1, 12))
+        self.day = str(rd.randint(1, 28))
         self.album = f'4{rd.randint(10000, 99999)}'
         self.pesel = self._gen_pesel()
 
@@ -168,5 +168,5 @@ class Faker:
             font=FONT_N
         )
 
-        #pattern_image.show()
+        pattern_image.show()
         pattern_image.save(self.directory)
