@@ -19,6 +19,15 @@ FONT_A = ImageFont.truetype("fonts/age.ttf", size=37)
 MALE_PATTERN = "images/male_id.jpg"
 FEMALE_PATTERN = "images/female_id.jpg"
 
+UNIVERSITY_NAMES = {
+    'AGH': 'Akademia Górniczo-Hutnicza im. Stanisława Staszica\nw Krakowie',
+    'UJ': 'Uniwersytet Jagielloński',
+    'UP': 'Uniwersytet Pedagogiczny im. Komisji Edukacyjnej\nw Krakowie',
+    'UEK': 'Uniwersytet Ekonomiczny w Krakowie',
+    'PK': 'Politechnika Krakowska im. Tadeusza Kościuszki'
+
+}
+
 
 class Faker:
 
@@ -168,5 +177,21 @@ class Faker:
             font=FONT_N
         )
 
+        # --------------------------------------------------------------------- U N I V E R S I T Y
+        ImageDraw.Draw(
+            pattern_image  # Image
+        ).text(
+            (55, 969),  # Coordinates
+            UNIVERSITY_NAMES['AGH'],  # Text
+            (0, 0, 0),  # Color
+            font=FONT_N
+        )
+
         pattern_image.show()
         pattern_image.save(self.directory)
+
+
+if __name__ == "__main__":
+    Faker(year="2004", month="3", day="9", name="Miłosz", second_name="Borys", surname="Pabis", photo="F:\\Desktop\\repos\\sandbox\\PIL\\portrety\\krzysztof_wiktor_dynda.jpg",
+                 album="417356", show_day="12", show_month="10", pesel="04230909696", directory="F:\\Desktop\\test123.jpg",
+                 random=False)
