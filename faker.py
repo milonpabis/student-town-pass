@@ -7,17 +7,23 @@
 #WYMAGANE WYMIARY JAK DO LEGITYMACJI
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
+import PIL
 import random as rd
 import datetime as dt
 import os
+
+DEBUG = False
 
 DATE = dt.datetime.now()
 IMAGE_SIZE = (238, 299)
 FONT = ImageFont.truetype("fonts/FaktPro-Medium.ttf", size=39)
 FONT_N = ImageFont.truetype("fonts/Roboto-Medium.ttf", size=27)
+FONT_H = ImageFont.truetype("fonts/FaktPro-Medium.ttf", size=32)
+FONT_CREATION = ImageFont.truetype("fonts/Roboto-Medium.ttf", size=29)
+FONT_VALID = ImageFont.truetype("fonts/Roboto-Medium.ttf", size=23)
 FONT_A = ImageFont.truetype("fonts/age.ttf", size=37)
-MALE_PATTERN = "images/male_id.jpg"
-FEMALE_PATTERN = "images/female_id.jpg"
+MALE_PATTERN = "images/male_id1.jpg"
+FEMALE_PATTERN = "images/female_id1.jpg"
 
 UNIVERSITY_NAMES = {
     'AGH': 'Akademia Górniczo-Hutnicza im. Stanisława Staszica\nw Krakowie',
@@ -31,55 +37,60 @@ UNIVERSITY_NAMES = {
 
 class Faker:
 
-    def __init__(self, year: str, month: str, day: str, name: str, second_name: str, surname: str, photo: str,
-                 album: str, show_day: str, show_month: str, pesel: str, directory: str,
-                 random: bool = False):
+    def __init__(self):
 
-        self.directory = directory
-        self.random = random
-        self.show_day = show_day
-        self.show_month = show_month
-        self.photo = photo
-        self.name = name
-        self.second_name = second_name
-        self.surname = surname
+        self.directory: str
+        self.random: str
+        self.show_day: str
+        self.show_month: str
+        self.show_hour: str
+        self.photo: str
+        self.name: str
+        self.second_name: str
+        self.university: str
+        self.surname: str
+        self.year: str
+        self.month: str
+        self.day: str
+        self.album: str
+        self.pesel: str
+        self.age: str
+        self.sex: str
 
-        if self.random:
-            self._randomize()
-        else:
-            self.year = year
-            self.month = month
-            self.day = day
-            self.album = album
-            self.pesel = pesel
+        #self.age = self._calculate_age()
+        #self.sex = "M"
 
-        self.age = self._calculate_age()
-        self.sex = "M"
+        #if self.name.endswith("A"):
+        #    self.sex = "F"
 
-        if self.name.endswith("A"):
-            self.sex = "F"
-
-        self._fake()
+        #self._fake()
 
 
+    
 
-    def _calculate_age(self):
+
+
+    def _calculate_age(self) -> str:
         if int(self.month) < DATE.month or (int(self.month) == DATE.month and int(self.day) <= DATE.day):
             return str(DATE.year - int(self.year))
         else:
             return str(DATE.year - int(self.year) - 1)
 
-    def _randomize(self):
-        self.year = str(rd.randint(2002, 2005))
+
+    def _randomize(self) -> None:
+        current_year = int(dt.datetime.now().year)
+        self.year = str(rd.randint(current_year-22, current_year-21))
         self.month = str(rd.randint(1, 12))
         self.day = str(rd.randint(1, 28))
         self.album = f'4{rd.randint(10000, 99999)}'
         self.pesel = self._gen_pesel()
 
-    def _gen_pesel(self):
+
+    def _gen_pesel(self) -> str:
         return f'{str(self.year)[2:]}{int(self.month) + 20}{self.day}{rd.randint(10000, 99999)}'
 
-    def _fake(self):
+
+    def _fake(self) -> PIL.Image:
         image_sex = MALE_PATTERN
         if self.sex == 'F':
             image_sex = FEMALE_PATTERN
@@ -172,7 +183,7 @@ class Faker:
             pattern_image  # Image
         ).text(
             (220, 1090),  # Coordinates
-            f'{self.show_day}.{self.show_month}.{DATE.year} 22:28',  # Text
+            f'{self.show_day}.{self.show_month}.{DATE.year} {self.show_hour}',  # Text
             (0, 0, 0),  # Color
             font=FONT_N
         )
@@ -182,16 +193,106 @@ class Faker:
             pattern_image  # Image
         ).text(
             (55, 969),  # Coordinates
-            UNIVERSITY_NAMES['AGH'],  # Text
+            UNIVERSITY_NAMES.get(self.university, "AGH"),  # Text
             (0, 0, 0),  # Color
             font=FONT_N
         )
 
+        # --------------------------------------------------------------------- S H O W   H O U R
+        ImageDraw.Draw(
+            pattern_image  # Image
+        ).text(
+            (50, 29),  # Coordinates
+            self.show_hour,  # Text
+            (0, 0, 0),  # Color
+            font=FONT_H
+        )
+
+        # --------------------------------------------------------------------- C R E A T I O N   D A T E
+        ImageDraw.Draw(
+            pattern_image  # Image
+        ).text(
+            (658, 358),  # Coordinates
+            f"21.09.{dt.datetime.now().year-1}",  # Text
+            (0, 0, 0),  # Color
+            font=FONT_CREATION
+        )
+
+        # --------------------------------------------------------------------- V A L I D   T I L L
+        ImageDraw.Draw(
+            pattern_image  # Image
+        ).text(
+            (631, 774),  # Coordinates
+            f"31.10.{dt.datetime.now().year+2}",  # Text
+            (38, 131, 120),  # Color
+            font=FONT_VALID
+        )
+
+
         pattern_image.show()
-        pattern_image.save(self.directory)
+        #if not DEBUG:
+        #    print("SAVING", self.directory)
+        #    pattern_image.save(self.directory)
+        return pattern_image
+
+
+    def set_name(self, name: str) -> None:
+        self.name = name
+
+    def set_second_name(self, second_name: str) -> None:
+        self.second_name = second_name
+
+    def set_surname(self, surname: str) -> None:
+        self.surname = surname
+
+    def set_photo(self, photo: str) -> None:
+        self.photo = photo
+
+    def set_album(self, album: str) -> None:
+        self.album = album
+
+    def set_show_date(self, show_day: str, show_month: str, show_year: str, show_hour: str) -> None:
+        self.show_day = show_day
+        self.show_month = show_month
+        self.show_hour = show_hour
+
+    def set_pesel(self, pesel: str) -> None:
+        self.pesel = pesel
+
+    def set_university(self, university: str) -> None:
+        self.university = university
+
+    def set_directory(self, directory: str) -> None:
+        self.directory = directory
+
+    def set_random(self, random: bool) -> None:
+        self.random = random
+
+    def set_date(self, year: str, month: str, day: str) -> None:
+        self.year = year
+        self.month = month
+        self.day = day
+
+    def set_age(self, age: str) -> None:
+        self.age = age
+
+    def set_sex(self, sex: str) -> None:
+        self.sex = sex
 
 
 if __name__ == "__main__":
-    Faker(year="2004", month="3", day="9", name="Miłosz", second_name="Borys", surname="Pabis", photo="F:\\Desktop\\repos\\sandbox\\PIL\\portrety\\krzysztof_wiktor_dynda.jpg",
-                 album="417356", show_day="12", show_month="10", pesel="04230909696", directory="F:\\Desktop\\test123.jpg",
-                 random=False)
+    Faker(        year="2002",
+                  month="12",
+                  day="12", 
+                  name="Jan", 
+                  second_name="Kowalski", 
+                  surname="Nowak", 
+                  photo="images/ramka_blackout.png",
+                  album="12345",
+                  show_day="16",
+                  show_month="5",
+                  show_hour="12:00",
+                  pesel="12345678901",
+                  university="AGH",
+                  directory="hej",
+                  random=True)
