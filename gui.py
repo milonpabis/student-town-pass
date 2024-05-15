@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBo
 from PySide6.QtCore import Qt, QSize, QDate, QDateTime
 from PySide6.QtGui import QIcon, QFont, QPixmap
 from faker import Faker, DATE, UNIVERSITY_NAMES
+import io
 
 
 class Window(QMainWindow, Ui_MainWindow):
@@ -15,26 +16,31 @@ class Window(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("AGH ID Faker App")
         self.setWindowIcon(QIcon("UI/icons/AGH.png"))
-        self.year: str
-        self.month: str
-        self.day: str
-        self.name: str
-        self.second_name: str
-        self.surname: str
-        self.photo: str
-        self.album: str
-        self.show_day: str
-        self.show_month: str
-        self.show_hour: str
-        self.pesel: str
-        self.university: str
-        self.dir: str
+        self.year: str = ""
+        self.month: str = ""
+        self.day: str = ""
+        self.name: str = ""
+        self.second_name: str = ""
+        self.surname: str = ""
+        self.photo: str = ""
+        self.album: str = ""
+        self.show_day: str = ""
+        self.show_month: str = ""
+        self.show_hour: str = ""
+        self.pesel: str = ""
+        self.university: str = ""
+        self.dir: str = ""
         self.random: bool = False
+
+        self.image = None
 
         self.bt_generate.pressed.connect(self._generate)
         self.bt_addphoto.pressed.connect(self._add_photo)
         self.bt_savedir.pressed.connect(self._save_dir)
         self.check_random.stateChanged.connect(self._checked_random)
+
+        self.le_fname.textChanged.connect(self._set_name)
+
 
         self.de_showdate.setDateTime(QDateTime(DATE.year, DATE.month, DATE.day, DATE.hour, DATE.minute, DATE.second))
         self._populate_universities()
@@ -43,9 +49,23 @@ class Window(QMainWindow, Ui_MainWindow):
     def _generate(self):
         self._receive_data()
         if self._check_inputs():
-            
-            image = self.faker._fake()
-            image.show()
+            self.faker.set_name(self.name)
+            self.faker.set_second_name(self.second_name)
+            self.faker.set_surname(self.surname)
+            self.faker.set_photo(self.photo)
+            self.faker.set_album(self.album)
+            self.faker.set_show_date(self.show_day, self.show_month, self.show_hour)
+            self.faker.set_pesel(self.pesel)
+            self.faker.set_university(self.university)
+            self.faker.set_directory(self.dir)
+            self.faker.set_random(self.random)
+            self.faker.set_date(self.year, self.month, self.day)
+
+
+            pixmap = QPixmap()
+            self.image = self.faker._fake().getvalue()
+            pixmap.loadFromData(self.image)
+            self.l_preview.setPixmap(pixmap)
         else:
             msg = QMessageBox()
             msg.setText("Missing values!")
@@ -53,6 +73,13 @@ class Window(QMainWindow, Ui_MainWindow):
             msg.setWindowTitle("Ooops!")
             msg.setStandardButtons(QMessageBox.Ok)
             msg.exec()
+
+
+    def _update_preview(self) -> None:
+        pixmap = QPixmap()
+        self.image = self.faker._fake().getvalue()
+        pixmap.loadFromData(self.image)
+        self.l_preview.setPixmap(pixmap)
 
 
     def _check_inputs(self) -> bool:
@@ -125,6 +152,46 @@ class Window(QMainWindow, Ui_MainWindow):
         if minute < 10:
             minute = "0" + str(minute)
         return str(hour) + ":" + str(minute)
+    
+
+    def _set_name(self, name: str) -> None:
+        self.faker.set_name(name)
+        self._update_preview()
+
+    def _set_second_name(self, second_name: str) -> None:
+        self.faker.set_second_name(second_name)
+
+    def _set_surname(self, surname: str) -> None:
+        self.faker.set_surname(surname)
+
+    def _set_photo(self, photo: str) -> None:
+        self.faker.set_photo(photo)
+
+    def _set_album(self, album: str) -> None:
+        self.faker.set_album(album)
+
+    def _set_show_date(self, show_day: str, show_month: str, show_hour: str) -> None:
+        self.faker.set_show_date(show_day, show_month, show_hour)
+
+    def _set_pesel(self, pesel: str) -> None:
+        self.faker.set_pesel(pesel)
+
+    def _set_university(self, university: str) -> None:
+        self.faker.set_university(university)
+
+    def _set_directory(self, directory: str) -> None:
+        self.faker.set_directory(directory)
+
+    def _set_random(self, random: bool) -> None:
+        self.faker.set_random(random)
+
+    def _set_date(self, year: str, month: str, day: str) -> None:
+        self.faker.set_date(year, month, day)
+
+    def _set_age(self, age: str) -> None:
+        self.faker.set_age(age)
+
+    
 
 
 

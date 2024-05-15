@@ -11,6 +11,7 @@ import PIL
 import random as rd
 import datetime as dt
 import os
+import io
 
 DEBUG = False
 
@@ -39,23 +40,23 @@ class Faker:
 
     def __init__(self):
 
-        self.directory: str
-        self.random: str
-        self.show_day: str
-        self.show_month: str
-        self.show_hour: str
-        self.photo: str
-        self.name: str
-        self.second_name: str
-        self.university: str
-        self.surname: str
-        self.year: str
-        self.month: str
-        self.day: str
-        self.album: str
-        self.pesel: str
-        self.age: str
-        self.sex: str
+        self.directory: str = ""
+        self.random: str = ""
+        self.show_day: str = ""
+        self.show_month: str = ""
+        self.show_hour: str = ""
+        self.photo: str = ""
+        self.name: str = ""
+        self.second_name: str = ""
+        self.university: str = ""
+        self.surname: str = ""
+        self.year: str = ""
+        self.month: str = ""
+        self.day: str = ""
+        self.album: str = ""
+        self.pesel: str = ""
+        self.age: str = ""
+        self.sex: str = ""
         self.sex = "M"
 
         #self._fake()
@@ -232,7 +233,9 @@ class Faker:
         #if not DEBUG:
         #    print("SAVING", self.directory)
         #    pattern_image.save(self.directory)
-        return pattern_image
+        data = io.BytesIO()
+        pattern_image.save(data, format='PNG')
+        return data
 
 
     def set_name(self, name: str) -> None:
@@ -251,7 +254,7 @@ class Faker:
     def set_album(self, album: str) -> None:
         self.album = album
 
-    def set_show_date(self, show_day: str, show_month: str, show_year: str, show_hour: str) -> None:
+    def set_show_date(self, show_day: str, show_month: str, show_hour: str) -> None:
         self.show_day = show_day
         self.show_month = show_month
         self.show_hour = show_hour
