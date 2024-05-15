@@ -56,12 +56,7 @@ class Faker:
         self.pesel: str
         self.age: str
         self.sex: str
-
-        #self.age = self._calculate_age()
-        #self.sex = "M"
-
-        #if self.name.endswith("A"):
-        #    self.sex = "F"
+        self.sex = "M"
 
         #self._fake()
 
@@ -109,10 +104,14 @@ class Faker:
 
         pattern_image = Image.open(image_sex)
         mask_im = Image.open('images/ramka_blackout.png')
-        image = Image.open(self.photo).resize(IMAGE_SIZE)
+        if self.photo:
+            try:
+                image = Image.open(self.photo).resize(IMAGE_SIZE)
 
-        back_im = image.copy()
-        pattern_image.paste(back_im, (39, 415), mask_im)
+                back_im = image.copy()
+                pattern_image.paste(back_im, (39, 415), mask_im)
+            except:
+                pass
 
         # --------------------------------------------------------------------- F I R S T   S E C O N D   N A M E
         ImageDraw.Draw(
@@ -229,7 +228,7 @@ class Faker:
         )
 
 
-        pattern_image.show()
+        #pattern_image.show()
         #if not DEBUG:
         #    print("SAVING", self.directory)
         #    pattern_image.save(self.directory)
@@ -238,6 +237,7 @@ class Faker:
 
     def set_name(self, name: str) -> None:
         self.name = name
+        self.sex = "F" if self.name.endswith("A") else "M"
 
     def set_second_name(self, second_name: str) -> None:
         self.second_name = second_name
@@ -272,6 +272,7 @@ class Faker:
         self.year = year
         self.month = month
         self.day = day
+        self.age = self._calculate_age()
 
     def set_age(self, age: str) -> None:
         self.age = age

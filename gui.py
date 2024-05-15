@@ -9,6 +9,9 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def __init__(self):
         super().__init__()
+
+        self.faker = Faker()
+
         self.setupUi(self)
         self.setWindowTitle("AGH ID Faker App")
         self.setWindowIcon(QIcon("UI/icons/AGH.png"))
@@ -40,13 +43,9 @@ class Window(QMainWindow, Ui_MainWindow):
     def _generate(self):
         self._receive_data()
         if self._check_inputs():
-            Faker(year=self.year, month=self.month, day=self.day,
-                  name=self.name, second_name=self.second_name,
-                  surname=self.surname, photo=self.photo,
-                  album=self.album, show_day=self.show_day,
-                  show_month=self.show_month, show_hour=self.show_hour,
-                  pesel=self.pesel, university=self.university,
-                  directory=self.dir, random=self.random)
+            
+            image = self.faker._fake()
+            image.show()
         else:
             msg = QMessageBox()
             msg.setText("Missing values!")
