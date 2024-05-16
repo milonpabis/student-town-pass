@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateEdit,
-    QDateTimeEdit, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QMainWindow, QPushButton, QSizePolicy,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QDateEdit, QDateTimeEdit,
+    QFrame, QHBoxLayout, QLabel, QLineEdit,
+    QMainWindow, QPushButton, QSizePolicy, QVBoxLayout,
+    QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -27,8 +27,10 @@ class Ui_MainWindow(object):
         MainWindow.resize(600, 800)
         MainWindow.setMinimumSize(QSize(600, 800))
         MainWindow.setMaximumSize(QSize(600, 800))
+        MainWindow.setStyleSheet(u"background-color: rgb(0, 0, 0);")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
+        self.centralwidget.setStyleSheet(u"background-color: rgba(255, 255, 255, 180);")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -87,7 +89,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.fr_bodybody = QFrame(self.fr_body)
         self.fr_bodybody.setObjectName(u"fr_bodybody")
-        self.fr_bodybody.setFrameShape(QFrame.StyledPanel)
+        self.fr_bodybody.setFrameShape(QFrame.NoFrame)
         self.fr_bodybody.setFrameShadow(QFrame.Raised)
         self.horizontalLayout = QHBoxLayout(self.fr_bodybody)
         self.horizontalLayout.setSpacing(0)
@@ -102,7 +104,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.fr_body_l = QFrame(self.fr_body_left)
         self.fr_body_l.setObjectName(u"fr_body_l")
-        self.fr_body_l.setFrameShape(QFrame.StyledPanel)
+        self.fr_body_l.setFrameShape(QFrame.NoFrame)
         self.fr_body_l.setFrameShadow(QFrame.Raised)
         self.verticalLayout_3 = QVBoxLayout(self.fr_body_l)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -306,57 +308,6 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.frame_5)
 
-        self.frame_6 = QFrame(self.fr_body_l)
-        self.frame_6.setObjectName(u"frame_6")
-        self.frame_6.setMinimumSize(QSize(0, 50))
-        self.frame_6.setMaximumSize(QSize(16616161, 16777215))
-        self.frame_6.setStyleSheet(u"background-color: rgb(200, 202, 214);")
-        self.frame_6.setFrameShape(QFrame.StyledPanel)
-        self.frame_6.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_9 = QHBoxLayout(self.frame_6)
-        self.horizontalLayout_9.setSpacing(90)
-        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
-        self.horizontalLayout_9.setContentsMargins(3, 3, 3, 3)
-        self.frame_23 = QFrame(self.frame_6)
-        self.frame_23.setObjectName(u"frame_23")
-        self.frame_23.setFrameShape(QFrame.NoFrame)
-        self.frame_23.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_15 = QVBoxLayout(self.frame_23)
-        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
-        self.verticalLayout_15.setContentsMargins(-1, -1, 9, -1)
-        self.l_random = QLabel(self.frame_23)
-        self.l_random.setObjectName(u"l_random")
-        self.l_random.setMinimumSize(QSize(125, 0))
-        self.l_random.setMaximumSize(QSize(125, 16777215))
-        self.l_random.setFont(font1)
-        self.l_random.setStyleSheet(u"color: qlineargradient(spread:reflect, x1:0, y1:0.534, x2:1, y2:0.523, stop:0 rgba(0, 142, 0, 255), stop:0.513812 rgba(0, 0, 0, 255), stop:1 rgba(255, 0, 0, 255));")
-        self.l_random.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
-
-        self.verticalLayout_15.addWidget(self.l_random)
-
-
-        self.horizontalLayout_9.addWidget(self.frame_23)
-
-        self.frame_24 = QFrame(self.frame_6)
-        self.frame_24.setObjectName(u"frame_24")
-        self.frame_24.setFrameShape(QFrame.NoFrame)
-        self.frame_24.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_14 = QVBoxLayout(self.frame_24)
-        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
-        self.verticalLayout_14.setContentsMargins(102, 11, -1, -1)
-        self.check_random = QCheckBox(self.frame_24)
-        self.check_random.setObjectName(u"check_random")
-        self.check_random.setMaximumSize(QSize(15, 15))
-        self.check_random.setStyleSheet(u"")
-
-        self.verticalLayout_14.addWidget(self.check_random)
-
-
-        self.horizontalLayout_9.addWidget(self.frame_24)
-
-
-        self.verticalLayout_3.addWidget(self.frame_6)
-
         self.frame_7 = QFrame(self.fr_body_l)
         self.frame_7.setObjectName(u"frame_7")
         self.frame_7.setMinimumSize(QSize(0, 0))
@@ -447,57 +398,6 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_3.addWidget(self.frame_12)
-
-        self.frame_8 = QFrame(self.fr_body_l)
-        self.frame_8.setObjectName(u"frame_8")
-        self.frame_8.setMinimumSize(QSize(0, 0))
-        self.frame_8.setMaximumSize(QSize(600, 16777215))
-        self.frame_8.setStyleSheet(u"background-color: rgb(200, 202, 214);")
-        self.frame_8.setFrameShape(QFrame.StyledPanel)
-        self.frame_8.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_11 = QHBoxLayout(self.frame_8)
-        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
-        self.horizontalLayout_11.setContentsMargins(3, 3, 3, 3)
-        self.frame_27 = QFrame(self.frame_8)
-        self.frame_27.setObjectName(u"frame_27")
-        self.frame_27.setFrameShape(QFrame.NoFrame)
-        self.frame_27.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_19 = QVBoxLayout(self.frame_27)
-        self.verticalLayout_19.setObjectName(u"verticalLayout_19")
-        self.l_pesel = QLabel(self.frame_27)
-        self.l_pesel.setObjectName(u"l_pesel")
-        self.l_pesel.setMinimumSize(QSize(125, 0))
-        self.l_pesel.setMaximumSize(QSize(125, 16777215))
-        self.l_pesel.setFont(font1)
-        self.l_pesel.setStyleSheet(u"color: qlineargradient(spread:reflect, x1:0, y1:0.534, x2:1, y2:0.523, stop:0 rgba(0, 142, 0, 255), stop:0.513812 rgba(0, 0, 0, 255), stop:1 rgba(255, 0, 0, 255));")
-
-        self.verticalLayout_19.addWidget(self.l_pesel)
-
-
-        self.horizontalLayout_11.addWidget(self.frame_27)
-
-        self.frame_28 = QFrame(self.frame_8)
-        self.frame_28.setObjectName(u"frame_28")
-        self.frame_28.setFrameShape(QFrame.NoFrame)
-        self.frame_28.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_18 = QVBoxLayout(self.frame_28)
-        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
-        self.verticalLayout_18.setContentsMargins(84, -1, -1, -1)
-        self.le_pesel = QLineEdit(self.frame_28)
-        self.le_pesel.setObjectName(u"le_pesel")
-        self.le_pesel.setMinimumSize(QSize(120, 25))
-        self.le_pesel.setMaximumSize(QSize(120, 25))
-        self.le_pesel.setStyleSheet(u"color: qlineargradient(spread:reflect, x1:0, y1:0.534, x2:1, y2:0.523, stop:0 rgba(0, 142, 0, 255), stop:0.513812 rgba(0, 0, 0, 255), stop:1 rgba(255, 0, 0, 255));\n"
-"background-color: rgb(250, 244, 255);")
-        self.le_pesel.setAlignment(Qt.AlignCenter)
-
-        self.verticalLayout_18.addWidget(self.le_pesel)
-
-
-        self.horizontalLayout_11.addWidget(self.frame_28)
-
-
-        self.verticalLayout_3.addWidget(self.frame_8)
 
         self.frame_9 = QFrame(self.fr_body_l)
         self.frame_9.setObjectName(u"frame_9")
@@ -701,11 +601,8 @@ class Ui_MainWindow(object):
         self.l_secname.setText(QCoreApplication.translate("MainWindow", u"Second Name", None))
         self.l_surname.setText(QCoreApplication.translate("MainWindow", u"Surname", None))
         self.l_showdate.setText(QCoreApplication.translate("MainWindow", u"Show Date", None))
-        self.l_random.setText(QCoreApplication.translate("MainWindow", u"Random Info", None))
-        self.check_random.setText("")
         self.l_birth.setText(QCoreApplication.translate("MainWindow", u"Date of Birth", None))
         self.lb_university.setText(QCoreApplication.translate("MainWindow", u"University", None))
-        self.l_pesel.setText(QCoreApplication.translate("MainWindow", u"PESEL", None))
         self.l_album.setText(QCoreApplication.translate("MainWindow", u"Album No.", None))
         self.l_savedir.setText(QCoreApplication.translate("MainWindow", u"Save Directory", None))
         self.bt_savedir.setText(QCoreApplication.translate("MainWindow", u"?", None))

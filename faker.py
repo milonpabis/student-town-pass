@@ -23,8 +23,8 @@ FONT_H = ImageFont.truetype("fonts/FaktPro-Medium.ttf", size=32)
 FONT_CREATION = ImageFont.truetype("fonts/Roboto-Medium.ttf", size=29)
 FONT_VALID = ImageFont.truetype("fonts/Roboto-Medium.ttf", size=23)
 FONT_A = ImageFont.truetype("fonts/age.ttf", size=37)
-MALE_PATTERN = "images/male_id1.jpg"
-FEMALE_PATTERN = "images/female_id1.jpg"
+MALE_PATTERN = "images/male_id.jpg"
+FEMALE_PATTERN = "images/female_id.jpg"
 
 UNIVERSITY_NAMES = {
     'AGH': 'Akademia Górniczo-Hutnicza im. Stanisława Staszica\nw Krakowie',
@@ -48,7 +48,7 @@ class Faker:
         self.photo: str = ""
         self.name: str = ""
         self.second_name: str = ""
-        self.university: str = ""
+        self.university: str = "AGH"
         self.surname: str = ""
         self.year: str = ""
         self.month: str = ""
@@ -56,13 +56,9 @@ class Faker:
         self.album: str = ""
         self.pesel: str = ""
         self.age: str = ""
-        self.sex: str = ""
-        self.sex = "M"
+        self.sex: str = "M"
 
-        #self._fake()
-
-
-    
+        self.image = PIL.Image.open(self._fake())
 
 
 
@@ -73,17 +69,9 @@ class Faker:
             return str(DATE.year - int(self.year) - 1)
 
 
-    def _randomize(self) -> None:
-        current_year = int(dt.datetime.now().year)
-        self.year = str(rd.randint(current_year-22, current_year-21))
-        self.month = str(rd.randint(1, 12))
-        self.day = str(rd.randint(1, 28))
-        self.album = f'4{rd.randint(10000, 99999)}'
-        self.pesel = self._gen_pesel()
-
-
     def _gen_pesel(self) -> str:
-        return f'{str(self.year)[2:]}{int(self.month) + 20}{self.day}{rd.randint(10000, 99999)}'
+        day = "0" + self.day if len(self.day) == 1 else self.day
+        self.pesel =  f'{str(self.year)[2:]}{int(self.month) + 20}{day}{rd.randint(10000, 99999)}'
 
 
     def _fake(self) -> PIL.Image:
@@ -233,8 +221,9 @@ class Faker:
         #if not DEBUG:
         #    print("SAVING", self.directory)
         #    pattern_image.save(self.directory)
+        self.image = pattern_image
         data = io.BytesIO()
-        pattern_image.save(data, format='PNG')
+        pattern_image.save(data, format='JPEG')
         return data
 
 
@@ -242,34 +231,40 @@ class Faker:
         self.name = name
         self.sex = "F" if self.name.endswith("A") else "M"
 
+
     def set_second_name(self, second_name: str) -> None:
         self.second_name = second_name
+
 
     def set_surname(self, surname: str) -> None:
         self.surname = surname
 
+
     def set_photo(self, photo: str) -> None:
         self.photo = photo
 
+
     def set_album(self, album: str) -> None:
         self.album = album
+
 
     def set_show_date(self, show_day: str, show_month: str, show_hour: str) -> None:
         self.show_day = show_day
         self.show_month = show_month
         self.show_hour = show_hour
 
-    def set_pesel(self, pesel: str) -> None:
-        self.pesel = pesel
 
     def set_university(self, university: str) -> None:
         self.university = university
 
+
     def set_directory(self, directory: str) -> None:
         self.directory = directory
 
+
     def set_random(self, random: bool) -> None:
         self.random = random
+
 
     def set_date(self, year: str, month: str, day: str) -> None:
         self.year = year
@@ -277,8 +272,10 @@ class Faker:
         self.day = day
         self.age = self._calculate_age()
 
+
     def set_age(self, age: str) -> None:
         self.age = age
+
 
     def set_sex(self, sex: str) -> None:
         self.sex = sex
