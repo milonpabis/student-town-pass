@@ -1,4 +1,4 @@
-# AGH-ID-Faker
+# Student-Town-Pass
 App creating fake ID, for those who want to go to "Miasteczko", not for commercial usage!!!
 It was made only to fool the annoying guards. **NEVER USE IT FOR DIFFERENT PURPOSES**.
 
